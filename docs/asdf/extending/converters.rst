@@ -54,7 +54,7 @@ Additionally, the Converter interface includes a method that must be implemented
 when some logic is required to select the tag to assign to a ``to_yaml_tree`` result:
 
 `Converter.select_tag<Converter>` - an optional method that accepts a complex Python object and a list
-candidate tags and returns the tag that should be used to serialize the object.
+of candidate tags and returns the tag that should be used to serialize the object.
 
 `Converter.lazy<Converter>` - a boolean attribute indicating if this converter accepts "lazy" objects
 (those defined in `asdf.lazy_nodes`). This is mostly useful for container-like classes
@@ -149,9 +149,10 @@ Now say we want to map our one Rectangle class to one of two tags, either
 rectangle-1.0.0 or square-1.0.0.  We'll need to add square-1.0.0 to
 the converter's list of tags and implement a `select_tag<Converter>` method:
 
+
 .. code-block:: python
 
-    RETANGLE_TAG = "asdf://example.com/shapes/tags/rectangle-1.0.0"
+    RECTANGLE_TAG = "asdf://example.com/shapes/tags/rectangle-1.0.0"
     SQUARE_TAG = "asdf://example.com/shapes/tags/square-1.0.0"
 
 
@@ -259,6 +260,13 @@ contains a reference to itself among its descendants.  Consider a
 `fractions.Fraction` subclass that maintains a reference to its multiplicative
 inverse:
 
+..
+   I had some difficulties with following along with this example.
+   There are a couple small copy-paste problems in the code, noted below.
+   Also, calling the project "example_project.fractions" can lead to
+   a circular import when `fractions` is imported to define
+   `FractionWithInverse`.
+
 .. code-block:: python
 
     # in the example_project.fractions module
@@ -297,16 +305,16 @@ when we define our ``from_yaml_tree`` method in a naive way:
 
         def to_yaml_tree(self, obj, tag, ctx):
             return {
-                "numerator": obj.width,
-                "denominator": obj.height,
+                "numerator": obj.numerator,
+                "denominator": obj.denominator,
                 "inverse": obj.inverse,
             }
 
         def from_yaml_tree(self, node, tag, ctx):
             from example_project.fractions import FractionWithInverse
 
-            obj = FractionWithInverse(tree["numerator"], tree["denominator"])
-            obj.inverse = tree["inverse"]
+            obj = FractionWithInverse(node["numerator"], node["denominator"])
+            obj.inverse = node["inverse"]
             return obj
 
 After adding this Converter to an Extension and installing it, the fraction
@@ -326,7 +334,12 @@ But upon deserialization, we notice a problem:
 
     assert reconstituted_f1.inverse.inverse is asdf.treeutil.PendingValue
 
-The presence of `~asdf.treeutil._PendingValue` is asdf's way of telling us
+..
+   I think the reference below should be the public `PendingValue`, not
+   `_PendingValue`, but making the change below throws a "reference target not found"
+   warning when building the docs.
+
+The presence of `~asdf.treeutil.PendingValue` is asdf's way of telling us
 that the value corresponding to the key ``inverse`` was not fully deserialized
 at the time that we retrieved it.  We can handle this situation by making our
 ``from_yaml_tree`` a generator function:
@@ -336,9 +349,9 @@ at the time that we retrieved it.  We can handle this situation by making our
         def from_yaml_tree(self, node, tag, ctx):
             from example_project.fractions import FractionWithInverse
 
-            obj = FractionWithInverse(tree["numerator"], tree["denominator"])
+            obj = FractionWithInverse(node["numerator"], node["denominator"])
             yield obj
-            obj.inverse = tree["inverse"]
+            obj.inverse = node["inverse"]
 
 The generator version of ``from_yaml_tree`` yields the partially constructed
 ``FractionWithInverse`` object before setting its inverse property.  This allows
@@ -351,7 +364,7 @@ With this modification we can successfully deserialize our ASDF file:
 .. code-block:: python
 
     with asdf.open("with_inverse.asdf") as af:
-        reconstituted_f1 = ff["fraction"]
+        reconstituted_f1 = af["fraction"]
 
     assert reconstituted_f1.inverse.inverse is reconstituted_f1
 

@@ -9,8 +9,13 @@ global configuration options.  Currently available options are limited, but we e
 to eventually move many of the ``AsdfFile.__init__`` and ``AsdfFile.write_to``
 keyword arguments to `AsdfConfig`.
 
-AsdfConfig and you
-==================
+..
+   This is a style choice, but I find this section title jarring, since the
+   the text mostly uses "one" to refer to the reader.  I'd recommend something like
+   "Using AsdfConfig" instead.
+
+Using AsdfConfig
+================
 
 The `AsdfConfig` class provides properties that can be adjusted to change the
 behavior of the `asdf` library for all files.  For example, to disable schema validation
@@ -101,6 +106,11 @@ Config options
 
 .. _config_options_array_inline_threshold:
 
+..
+   In this section, there are references to AsdfFile functions inside
+   double-backticks -- these should be reference links instead.
+
+
 array_inline_threshold
 ----------------------
 
@@ -119,6 +129,7 @@ Use this storage type for all arrays within an ASDF file. Must be one of
 - ``"external"``
 - ``"inline"``
 - ``None``
+
 
 If ``None`` a different storage type can be used for each array.
 See ``AsdfFile.set_array_storage`` for more details.
@@ -147,6 +158,12 @@ Defaults to ``None``.
 
 default_array_save_base
 -----------------------
+
+..
+   This explanation is confusing - I think it intends to say
+   that the view will be treated as independent from the base array if False?
+   And if True, the view is just a reference into the base array?  Is that true
+   even if the full base array is not separately referenced within the tree?
 
 Controls the default behavior asdf will follow when saving an array view.
 If ``True`` (the default) the base array for the view will be saved in an ASDF
@@ -189,6 +206,9 @@ Defaults to the latest stable ASDF Standard version.
 
 io_block_size
 -------------
+
+..
+   What is st_blksize?
 
 The buffer size used when reading and writing to the filesystem.  Users may wish
 to adjust this value to improve I/O performance.  Set to -1 to use the preferred

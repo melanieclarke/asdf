@@ -21,6 +21,9 @@ Any breaking API changes will only be included in major releases (where the
 major version number will be increased). We follow
 `Semantic Versioning <https://semver.org/>`_.
 
+..
+   This note is out of date and should be removed or revised.
+
 .. note::
 
    We are planning to clean up the public API following the 2.15 release. We
@@ -47,6 +50,9 @@ ASDF primarily depends on CPython and NumPy. As a scientific Python library, we
 have chosen to abide by the policy laid out in
 `NEP 29 <https://numpy.org/neps/nep-0029-deprecation_policy.html>`_.
 The following table summarizes this policy:
+
+..
+   This table and the next need updating for 2025 status.
 
 ============ ====== =====
 Date         Python NumPy

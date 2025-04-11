@@ -6,10 +6,14 @@ welcoming community to all of our users and contributors.
 New to GitHub or open source projects? If you are unsure about where to start or
 haven't used GitHub before, please feel free to contact the package maintainers.
 
+..
+   Links with text that just read "here" should be avoided - it's easier to
+   skim for links that have more descriptive text.
+
 .. note::
     The ASDF Standard itself also has a repository on github. Suggestions for
-    improvements to the ASDF Standard can be reported `here
-    <https://github.com/asdf-format/asdf-standard>`_.
+    improvements can be reported to the `ASDF Standard
+    GitHub project <https://github.com/asdf-format/asdf-standard>`_.
 
 Feedback, Feature Requests, and Bug Reports
 -------------------------------------------

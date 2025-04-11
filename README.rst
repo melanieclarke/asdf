@@ -44,17 +44,22 @@ contains the Python implementation of the ASDF Standard. More
 information on the ASDF Standard itself can be found
 `here <https://asdf-standard.readthedocs.io>`__.
 
+..
+   The below list has varying grammatical structure - it
+   would be more readable if all items were consistently phrased.
+
+
 The ASDF format has the following features:
 
-* A hierarchical, human-readable metadata format (implemented using `YAML
-  <http://yaml.org>`__)
+* Metadata is stored in hierarchical, human-readable format (implemented using `YAML
+  <http://yaml.org>`__).
 * Numerical arrays are stored as binary data blocks which can be memory
   mapped. Data blocks can optionally be compressed.
 * The structure of the data can be automatically validated using schemas
-  (implemented using `JSON Schema <http://json-schema.org>`__)
+  (implemented using `JSON Schema <http://json-schema.org>`__).
 * Native Python data types (numerical types, strings, dicts, lists) are
-  serialized automatically
-* ASDF can be extended to serialize custom data types
+  serialized automatically.
+* Custom data types can be serialized via ASDF extensions.
 
 .. _end-summary-text:
 
@@ -255,6 +260,18 @@ option of `open` when reading:
 .. code:: python
 
     af = asdf.open("example.asdf", memmap=False)
+
+..
+   This section on memory mapping is a bit confusing.
+
+   After opening with memmap=False as above, I tried this:
+   >>> af['powers']
+   and got:
+   `{'squares': <array (unloaded) shape: [100] dtype: int64>}`
+   I expected the array would be loaded with memmap=False. Looking
+   at the docstring for open, it looks like memmap is already False by
+   default (contrary to above description), and I would need to set
+   lazy_load=False to actually load the array on open.
 
 .. _end-read-file-text:
 

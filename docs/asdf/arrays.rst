@@ -4,6 +4,12 @@
 Array Data
 **********
 
+..
+   It might be nice to give the test files in this section different
+   names, so they don't overwrite each other as the reader follows along.
+
+   It would also be helpful to include near the beginning of this section
+   something on how to read the file back in and use the array.
 
 Saving arrays
 =============
@@ -197,6 +203,12 @@ binary data.
 
 .. asdf:: test.asdf
 
+..
+   Reading this, I was confused on whether the array stored as a stream
+   object would be handled the same way as an array written all at once,
+   when the file is read back in.  From some experimenting, it looks like
+   it behaves the same, but it would be helpful to mention it here.
+
 A case where streaming may be useful is when converting large data sets from a
 different format into ASDF. In these cases it would be impractical to hold all
 of the data in memory as an intermediate step. Consider the following example
@@ -278,6 +290,14 @@ different compression algorithm when writing the file out again.
 
 Memory mapping
 ==============
+
+..
+   Same note as in the README - this section is misleading because memmap=False
+   by default.  You need to use lazy_load=False or touch the data inside the
+   `with` block to read it in to memory.  It would be helpful to include here
+   an example of how you *should* access the data, not just an example of how
+   not to.
+
 
 By default, all internal array data is memory mapped using `numpy.memmap`. This
 allows for the efficient use of memory even when reading files with very large

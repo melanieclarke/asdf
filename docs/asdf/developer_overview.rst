@@ -29,6 +29,11 @@ validation and tree construction when reading.
 Construction in progress
 ------------------------
 
+..
+   The stable asdf version is now > 4.1 and this looks like it was written
+   around v2.8.  The text below should probably be reassessed in light of the
+   current status.
+
 Before we get into further details, a word on the transition to new plugin APIs.
 Starting in asdf 2.8 we've introduced new interfaces for extending the asdf
 library to support additional tags and schemas.  The interfaces were redesigned
@@ -163,8 +168,14 @@ The code that builds the trees is spread in many places: ``tagged.py``,
 ``treeutil.py``, ``types.py`` as well as all the extension code that supplies
 code to handle the tags within (and often the the associated schemas).
 
-A note on the location of schemas and tag code; there is a bit of schizophrenic
-aspect to this since schema should be language agnostic and in that view, not
+..
+   The adjective used here is inappropriate and unclear in this context.
+   I'm not sure exactly what was meant - one possible suggestion below, but
+   the paragraph could use some revision in general if it still applies to
+   the current package state.
+
+A note on the location of schemas and tag code; there is a bit of code sprawl
+since schema should be language agnostic and in that view, not
 bundled with specific language library code. But currently nearly all of the
 implementation is in Python so while the long-term goal is to keep them
 separate, it is more convenient to keep them together for now. You will see
@@ -244,6 +255,12 @@ corresponding output.
 Outline of how an ASDF file is opened and read into the corresponding Python object.
 ------------------------------------------------------------------------------------
 
+..
+   This section and the next look a little incomplete and a little too
+   informal in style and organization - they could use some proofreading and
+   cleaning up if there is content here that is still useful.  I noted a
+   couple examples below, but there are more.
+
 The starting point can be found in ``asdf.py`` essentially through the following
 chain (many calls and steps left out to keep it simpler to follow)
 
@@ -284,7 +301,7 @@ One of the hooks that pyyaml supplies is the ability to overload the method
 calls this method at each node in the tree to see if anything special should be
 done. One could perform conversion to predefined objects here, but instead it
 does the following: it sees if the node.tag attribute is handled by yaml itself
-(examples?) it calls that constructor which returns the type yaml converts it
+ it calls that constructor which returns the type yaml converts it
 to. Otherwise:
 
  - it converts the node to the type indicated (dict, list, or scalar type) by
@@ -318,9 +335,9 @@ handling is needed. And the way it is handled is through a internal mechanism of
 the jsonschema library. There is a method that jsonschema calls recursively for
 a validator and it is called iter_errors. The subclass of the jsonschema
 validator class is defined as schema.ASDFValidator and this method is overloaded
-in this class. Despite its name, it's primary purpose is to validate the special
+in this class. Despite its name, its primary purpose is to validate the special
 features that yaml has, namely applying schemas associated with tags (this is
-not part of the normal jsonschema scheme [ahem]). It is in this method that it
+not part of the normal jsonschema scheme). It is in this method that it
 looks for a tag for a node and if it exists and in the tag_index, loads the
 appropriate schema and applies it to the node. (jsonschemas are normally only
 associated with a whole json entity rather than specific nodes). While the
@@ -348,14 +365,20 @@ replacing such nodes with Python objects. The tree traversal starts from the
 top, but the objects are created from the bottom up due to recursion (well, not
 quite that simple).
 
+..
+   Is this actually described elsewhere? If so, a link would help.
+
 Understanding how this works is described more fully later on.
 
 The result is what af.tree is set to, after doing another tree traversal looking
 for special type hooks for each node. It isn't clear if there is yet any use of that
 feature.
 
-Not quite that simple
----------------------
+..
+   Should this section have some content?  As is, it can be removed.
+
+   Not quite that simple
+   ---------------------
 
 Outline of schema.py
 --------------------

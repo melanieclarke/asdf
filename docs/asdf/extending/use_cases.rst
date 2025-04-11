@@ -127,6 +127,9 @@ called an extension manifest that defines the extension in a language-independen
    we're including in our extension.  See :ref:`extending_manifests` for information
    on the manifest format.
 
+..
+   Numbering is broken here - there are 2 5s.
+
 5. Make the schema and manifest installable as `asdf` library resources.  See
    :ref:`extending_resources` for an overview of resources in `asdf` and
    :ref:`extending_resources_entry_points` for information on installing resources
@@ -153,6 +156,9 @@ Support a new block compressor
 In order to support a new compression algorithm for ASDF binary blocks,
 we need to implement the `~asdf.extension.Compressor` interface and install
 that in an extension.
+
+..
+   Numbering is broken here - there are 2 1s.
 
 1. Select a 4-byte compression code that will signify the compression algorithm.
 
